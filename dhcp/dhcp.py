@@ -1,5 +1,5 @@
 from random import randint
-import addr4_handler as addr4
+import format.addr4_handler as addr4
 import config
 
 
@@ -11,7 +11,8 @@ def get_config(hw_addr: str):
         'addr': get_addr(),
         'netmask': get_netmask(),
         'gateway': get_gateway(),
-        'dns': get_dns()
+        'dns': get_dns(),
+        'server': get_dhcp_server()
     }
 
     save_lease(conf['addr'], hw_addr)
@@ -74,6 +75,10 @@ def get_gateway():
 
 def get_dns():
     return config.dns_servers
+
+
+def get_dhcp_server():
+    return config.dhcp_server
 
 
 if __name__ == '__main__':

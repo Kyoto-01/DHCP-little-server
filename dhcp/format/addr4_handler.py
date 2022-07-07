@@ -7,6 +7,15 @@ def get_bin_addr(addr: str) -> str:
     return ''.join(bin_octects)
 
 
+def get_hex_addr(addr: str):
+    hex_octects = bytes(map(
+        lambda octect: int(octect),
+        addr.split('.')
+    ))
+
+    return hex_octects
+
+
 def get_int_addr(addr: str) -> str:
     return int(addr.replace('.', ''))
 
