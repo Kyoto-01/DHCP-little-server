@@ -23,19 +23,19 @@ def build(cpkt):
     xid = cdata['xid']
     secs = bytes([0x00, 0x00])
     flags = cdata['flags']
-    ciaddr = cdata['ciaddr']
+    ciaddr = cdata['ciaddr'] 
     yiaddr = conf['addr']  # bytes([0x0a, 0x00, 0x04, 0xde]) ex.: 192.168.1.x
     siaddr = conf['server']  # ex.: 192.168.1.8 addr deste server
     giaddr = bytes([0x00, 0x00, 0x00, 0x00])
     chaddr = cdata['chaddr']
-    chaddr_pad = bytes(padding_generator(16 - hlen[0]))
     sname = bytes(padding_generator(64))
     file = bytes(padding_generator(128))
+    magic = bytes([0x63, 0x82, 0x53, 0x63])
     opts = options.get_options(conf, res_msg_type)
 
     pkt = (
         op + htype + hlen + hops + xid + secs + flags + ciaddr + yiaddr +
-        siaddr + giaddr + chaddr + chaddr_pad + sname + file + opts
+        siaddr + giaddr + chaddr + sname + file + magic + opts
     )
 
     return pkt
