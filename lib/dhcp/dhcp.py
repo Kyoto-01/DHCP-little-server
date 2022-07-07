@@ -1,6 +1,7 @@
+from audioop import add
 from random import randint
-import format.addr4_handler as addr4
-import config
+import lib.dhcp.format.addr4_handler as addr4
+import lib.dhcp.config as config
 
 
 leases = []
@@ -8,11 +9,11 @@ leases = []
 
 def get_config(hw_addr: str):
     conf = {
-        'addr': get_addr(),
-        'netmask': get_netmask(),
-        'gateway': get_gateway(),
-        'dns': get_dns(),
-        'server': get_dhcp_server()
+        'addr': get_addr_bytes(),
+        'netmask': get_netmask_bytes(),
+        'gateway': get_gateway_bytes(),
+        'dns': get_dns_bytes(),
+        'server': get_dhcp_server_bytes()
     }
 
     save_lease(conf['addr'], hw_addr)
@@ -57,6 +58,13 @@ def get_addr() -> str:
     return new_addr
 
 
+def get_addr_bytes():
+    addr = get_addr()
+    addr = addr4.get_hex_addr(addr)
+
+    return addr
+
+
 def get_subnet():
     return config.subnet
 
@@ -69,16 +77,45 @@ def get_netmask():
     return config.netmask
 
 
+def get_netmask_bytes():
+    mask = get_netmask()
+    mask = addr4.get_hex_addr(mask)
+
+    return mask
+
+
 def get_gateway():
     return config.gateway
+
+
+def get_gateway_bytes():
+    gw = get_gateway()
+    gw = addr4.get_hex_addr(gw)
+
+    return gw
 
 
 def get_dns():
     return config.dns_servers
 
 
+def get_dns_bytes():
+    dns1, dns2 = get_dns()
+    dns1 = addr4.get_hex_addr(dns1)
+    dns2 = addr4.get_hex_addr(dns2)
+
+    return dns1, dns2
+
+
 def get_dhcp_server():
     return config.dhcp_server
+
+
+def get_dhcp_server_bytes():
+    server = get_dhcp_server()
+    server = addr4.get_hex_addr(server)
+
+    return server
 
 
 if __name__ == '__main__':

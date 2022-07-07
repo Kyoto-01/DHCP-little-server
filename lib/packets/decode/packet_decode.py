@@ -1,8 +1,8 @@
 def decode(pkt):
-    op = pkt[0]
-    htype = pkt[1]
-    hlen = pkt[2]
-    hops = pkt[3]
+    op = bytes([pkt[0]])
+    htype = bytes([pkt[1]])
+    hlen = bytes([pkt[2]])
+    hops = bytes([pkt[3]])
     xid = pkt[4:8]
     secs = pkt[8:10]
     flags = pkt[10:12]
