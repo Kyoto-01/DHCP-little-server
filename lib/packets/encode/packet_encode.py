@@ -1,15 +1,10 @@
 from lib.packets.constants import *
-from lib.packets.decode.packet_decode import decode
-import lib.dhcp.dhcp as dhcp
-
 import lib.packets.encode.options as options
 
 
-def build(cpkt):
-    cdata = decode(cpkt)
-    conf = dhcp.get_config(cdata['chaddr'])
-
-    req_msg_type = bytes([cdata['options'][0]['data'][0]])
+def build(cdata, conf):
+    #req_msg_type = bytes([cdata['options'][0]['data'][0]])
+    req_msg_type = bytes([cdata['options'][53]['data'][0]])
 
     if req_msg_type == DHCP_DISCOVER:
         res_msg_type = DHCP_OFFER

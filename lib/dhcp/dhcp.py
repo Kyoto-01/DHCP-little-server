@@ -4,7 +4,7 @@ import lib.dhcp.format.addr4_handler as addr4
 import lib.dhcp.config as config
 
 
-leases = []
+leases = {}
 
 
 def get_config(hw_addr: str):
@@ -16,18 +16,21 @@ def get_config(hw_addr: str):
         'server': get_dhcp_server_bytes()
     }
 
-    save_lease(conf['addr'], hw_addr)
+    save_lease(hw_addr, conf)
 
     return conf
 
 
-def save_lease(net_addr, hw_addr):
-    lease = {
-        'net_addr': net_addr,
-        'hw_addr': hw_addr
-    }
+def save_lease(hw_addr, conf):
+    leases[hw_addr] = conf
 
-    leases.append(lease)
+
+def get_lease(hw_addr):
+    return leases[hw_addr]
+
+
+def del_lease(hw_addr):
+    del leases[hw_addr]
 
 
 def is_addr_valid(addr):

@@ -1,3 +1,6 @@
+from socket import inet_ntoa
+
+
 def decode(pkt):
     op = bytes([pkt[0]])
     htype = bytes([pkt[1]])
@@ -39,7 +42,7 @@ def decode(pkt):
 
 
 def decode_options(options):
-    opt_list = []
+    opt_list = {}
 
     i = 0
     while options[i] != 0xff:
@@ -55,9 +58,22 @@ def decode_options(options):
             'data': opt_data
         }
 
-        opt_list.append(opt)
+        opt_list[opt_name] = opt
 
     return opt_list
+
+
+def get_requested_addr(opt_list):
+    # option 50 -> requested ip
+    if 50 in opt_list:
+        addr = inet_ntoa(opt_list[50]['data'])
+
+        if addr == '0.0.0.0':
+            addr = '255.255.255.255'
+    else:
+        addr = '255.255.255.255'
+
+    return addr
 
 
 if __name__ == '__main__':
